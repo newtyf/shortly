@@ -1,0 +1,23 @@
+{
+  "name": "url-shortening",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "co": "sui-mono commit",
+    "dev:client": "npm run dev -w client",
+    "build:client": "npm run build -w client",
+    "dev:server": "nodemon server/index -w server",
+    "start": "node server/index"
+  },
+  "keywords": [],
+  "author": "Axel Muñoz <axelskam.123@outlook.es>",
+  "license": "MIT",
+  "dependencies": {
+    "@s-ui/mono": "^2.34.0"
+  }
+}
