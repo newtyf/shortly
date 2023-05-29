@@ -23,8 +23,9 @@ html {
 }
 
 body {
-  max-width: 90vw;
+  max-width: 1200px;
   margin: auto;
+  overflow-x: hidden;
 }
 
 .logo {
@@ -67,6 +68,12 @@ body {
   &.btn--white {
     background-color: var(--White);
     color: var(--Grayish-violet);
+  }
+
+  &.btn--big {
+    width: 140px;
+    height: 40px;
+    font-size: .8rem;
   }
 
   &:hover {

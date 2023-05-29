@@ -2,7 +2,9 @@
 
 <template>
   <header>
-    <div class="logo"><a href="#" title="logo"><img src="/images/logo.svg" alt="" /></a></div>
+    <div class="logo">
+      <a href="#" title="logo"><img src="/images/logo.svg" alt="" /></a>
+    </div>
     <nav>
       <ul>
         <li><a href="" class="link">Features</a></li>
@@ -17,17 +19,15 @@
   </header>
   <main>
     <section class="home">
-      <div>
+      <div class="content">
         <h1 class="home__title">More than just shorter links</h1>
         <p class="home__description">
           Build your brand&apos;s recognition and get detailed insights on how
           your links are performing.
         </p>
-        <button class="home__btn">Get Started</button>
+        <button class="btn btn--big">Get Started</button>
       </div>
-      <div>
-        <div class="" style="width: 400px; height: 400px; background-color: aqua"></div>
-      </div>
+      <img class="home__image" src="/images/illustration-working.svg" alt="">
     </section>
     <section>
       <form>
@@ -106,16 +106,16 @@
     </ul>
     <ul>
       <li>
-        <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="" alt="facebook"></a>
+        <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="" alt="facebook" /></a>
       </li>
       <li>
-        <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="" alt="twitter"></a>
+        <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="" alt="twitter" /></a>
       </li>
       <li>
-        <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="" alt="pinterest"></a>
+        <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="" alt="pinterest" /></a>
       </li>
       <li>
-        <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="" alt="instagram"></a>
+        <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="" alt="instagram" /></a>
       </li>
     </ul>
   </footer>
@@ -124,7 +124,7 @@
 <style lang="scss">
 header {
   display: flex;
-  padding: 20px;
+  padding: 30px 0;
 
   nav {
     width: 100%;
@@ -139,10 +139,37 @@ header {
       li>a {
         margin-left: 40px;
       }
+
       li>button {
         margin-left: 10px;
       }
     }
+  }
+}
+
+.home {
+  display: flex;
+  align-items: center;
+  margin: 80px 0;
+
+  .content {
+    .home__title {
+      font-size: 4rem;
+      line-height: 1.2;
+      color: var(--Very-dark-violet);
+    }
+
+    .home__description {
+      color: var(--Grayish-violet);
+      margin-bottom: 40px;
+    }
+  }
+
+  img {
+    position: relative;
+    width: 50%;
+    left: 80px;
+    bottom: 50px;
   }
 }
 </style>
