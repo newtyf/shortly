@@ -6,9 +6,10 @@
 
 :root {
   // Primary
-  ---Cyan: hsl(180, 66%, 49%);
+  --Cyan: hsl(180, 66%, 49%);
   --Dark-violet: hsl(257, 27%, 26%);
   --White: hsl(0, 0%, 100%);
+  --Soft-Sky-blue: hsl(231, 30%, 95%);
 
   // Secondary
   --Gray: hsl(0, 0%, 75%);
@@ -20,6 +21,17 @@
 html {
   font-size: 18px;
   font-family: "Poppins", sans-serif;
+}
+
+.text {
+  color: var(--Grayish-violet);
+  line-height: 1.8;
+
+}
+
+.container {
+  padding-left: 169px;
+  padding-right: 169px;
 }
 
 .logo {
@@ -53,7 +65,7 @@ html {
 }
 
 .btn {
-  background-color: var(---Cyan);
+  background-color: var(--Cyan);
   color: var(--White);
   border: none;
   outline: none;
@@ -61,12 +73,12 @@ html {
   width: 110px;
   border-radius: 35px;
   cursor: pointer;
-  font-weight: bold;
   transition: opacity 300ms;
   font-size: 0.8rem;
   font-family: "Poppins", sans-serif;
 
   &.btn--white {
+    font-weight: bold;
     background-color: var(--White);
     color: var(--Grayish-violet);
   }
@@ -75,6 +87,10 @@ html {
     width: 195px;
     height: 55px;
     font-size: 1.1rem;
+  }
+
+  &.btn--minusRadius {
+    border-radius: 10px;
   }
 
   &:hover {
