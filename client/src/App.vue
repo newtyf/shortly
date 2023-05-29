@@ -27,7 +27,9 @@
         </p>
         <button class="btn btn--big">Get Started</button>
       </div>
-      <img class="home__image" src="/images/illustration-working.svg" alt="">
+      <div class="content-image">
+        <img class="home__image" src="/images/illustration-working.svg" alt="" />
+      </div>
     </section>
     <section>
       <form>
@@ -124,20 +126,22 @@
 <style lang="scss">
 header {
   display: flex;
-  padding: 30px 0;
+  padding: 52px 169px;
+  margin: auto;
 
   nav {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-left: 20px;
 
     ul {
       display: flex;
       list-style: none;
 
       li>a {
-        margin-left: 40px;
+        margin-left: 30px;
       }
 
       li>button {
@@ -150,26 +154,33 @@ header {
 .home {
   display: flex;
   align-items: center;
-  margin: 80px 0;
+  padding: 0 169px;
+  overflow-x: hidden;
+  margin: 10px 0;
 
   .content {
+    width: 53%;
+
     .home__title {
-      font-size: 4rem;
-      line-height: 1.2;
+      font-size: 4.3rem;
+      letter-spacing: -1px;
+      line-height: 1.1;
       color: var(--Very-dark-violet);
     }
 
     .home__description {
       color: var(--Grayish-violet);
       margin-bottom: 40px;
+      font-size: 1.2rem;
     }
   }
 
-  img {
-    position: relative;
-    width: 50%;
-    left: 80px;
-    bottom: 50px;
+  .content-image {
+    width: 47%;
+    img {
+      position: relative;
+      left: 70px;
+    }
   }
 }
 </style>
