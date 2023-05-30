@@ -1,3 +1,5 @@
+@import "./styles/mixins.scss";
+
 * {
   margin: 0;
   padding: 0;
@@ -21,6 +23,10 @@
 html {
   font-size: 18px;
   font-family: "Poppins", sans-serif;
+
+  @include mobile() {
+    font-size: 10px;
+  }
 }
 
 .text {
@@ -32,6 +38,11 @@ html {
 .container {
   padding-left: 169px;
   padding-right: 169px;
+
+  @include tablet() {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
 }
 
 .logo {

@@ -27,9 +27,7 @@
         </p>
         <button class="btn btn--big">Get Started</button>
       </div>
-      <div class="content-image">
-        <img class="home__image" src="/images/illustration-working.svg" alt="" />
-      </div>
+      <div class="content"><img class="home__image" src="/images/illustration-working.svg" alt="" /></div>
     </section>
     <section class="url-shorter container">
       <form>
@@ -133,6 +131,8 @@
 </template>
 
 <style lang="scss">
+@import "./styles/mixins.scss";
+
 header {
   display: flex;
   padding: 52px 0;
@@ -144,6 +144,10 @@ header {
     justify-content: space-between;
     align-items: center;
     margin-left: 20px;
+
+    @include tablet() {
+      display: none;
+    }
 
     ul {
       display: flex;
@@ -163,16 +167,24 @@ header {
 .home {
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-wrap: wrap-reverse;
-  overflow-x: hidden;
   margin: 10px 0;
+  overflow-x: clip;
+
+  @include mobile() {
+    flex-direction: column-reverse;
+  }
 
   .content {
-    flex: 2;
+    width: 50%;
+    min-width: 350px;
+
+    @include tablet() {
+      width: 100%;
+      text-align: center;
+    }
 
     .home__title {
-      font-size: 4.3rem;
+      font-size: 4.2rem;
       letter-spacing: -1px;
       line-height: 1.1;
       color: var(--Very-dark-violet);
@@ -183,16 +195,16 @@ header {
       margin-bottom: 40px;
       font-size: 1.2rem;
     }
-  }
-
-  .content-image {
-    flex: 1;
-    flex-basis: 250px;
 
     img {
-      width: 140%;
+      width: 120%;
       position: relative;
       left: 70px;
+
+      @include tablet() {
+        width: 100%;
+        left: 0;
+      }
     }
   }
 }
