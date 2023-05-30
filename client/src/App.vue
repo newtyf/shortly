@@ -170,7 +170,7 @@ header {
   margin: 10px 0;
   overflow-x: clip;
 
-  @include mobile() {
+  @include tablet() {
     flex-direction: column-reverse;
   }
 
@@ -202,8 +202,9 @@ header {
       left: 70px;
 
       @include tablet() {
+        margin-bottom: 40px;
         width: 100%;
-        left: 0;
+        left: 20px;
       }
     }
   }
@@ -228,6 +229,10 @@ header {
     position: relative;
     top: -84px;
 
+    @include mobile() {
+      padding: 20px;
+    }
+
     input {
       flex: 4;
       height: 70px;
@@ -241,12 +246,22 @@ header {
       &::placeholder {
         color: var(--Gray);
       }
+
+      @include mobile() {
+        padding: 0 20px;
+        height: 60px;
+      }
     }
 
     .url-shorter__btn {
       min-width: 150px;
       flex: 1;
       height: 70px;
+
+      @include mobile() {
+        padding: 0 20px;
+        height: 60px;
+      }
     }
   }
 }
