@@ -4,11 +4,11 @@ let connection: mysql.Connection;
 const createConnection = async () => {
   try {
     connection = await mysql.createConnection({
-      host: "localhost",
-      user: "root",
-      port: 3309,
-      password: "mysecretpassword",
-      database: "shortly",
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      port: parseInt(process.env.DB_PORT as string),
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_HOST,
     });
 
     await connection.query(

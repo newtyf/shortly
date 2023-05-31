@@ -1,0 +1,26 @@
+FROM node:18-alpine3.16
+
+WORKDIR /app
+
+COPY . .
+
+RUN npm install
+
+RUN npm run build:client
+RUN npm run build:server
+
+ARG HOST
+ARG USER
+ARG PORT
+ARG PASSWORD
+ARG DATABASE
+
+ENV DB_HOST=$HOST
+ENV DB_USER=$USER
+ENV DB_PORT=$PORT
+ENV DB_DATABASE=$DATABASE
+ENV DB_PASSWORD=$PASSWORD
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
