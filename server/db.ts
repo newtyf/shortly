@@ -8,7 +8,7 @@ const createConnection = async () => {
       user: process.env.DB_USER,
       port: parseInt(process.env.DB_PORT as string),
       password: process.env.DB_PASSWORD,
-      database: process.env.DB_HOST,
+      database: process.env.DB_DATABASE,
     });
 
     await connection.query(
