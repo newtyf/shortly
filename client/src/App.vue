@@ -1,11 +1,11 @@
 <script setup lang="ts">
 class Shorten {
-  short: string;
-  url: string;
+  shortUrl: string;
+  origUrl: string;
 
-  constructor(short: string, url: string) {
-    this.short = short,
-      this.url = url
+  constructor(url: string, short: string) {
+    this.origUrl = url,
+      this.shortUrl = short
   }
 }
 
@@ -13,20 +13,41 @@ import { ref } from 'vue';
 
 const url = ref("")
 const input = ref<HTMLInputElement>()
+const btnCopy = ref<HTMLButtonElement[]>()
 
 const shortenLinks = ref<Shorten[]>([])
 
-const shorter = () => {
+const shorter = async () => {
   if (url.value.length === 0) {
     input.value?.setAttribute("class", "error")
     input.value!.placeholder = "Please add link"
-    throw new Error("url vacio")
+    return
   } else {
     input.value?.setAttribute("class", "")
     input.value!.placeholder = "Shorten a link here..."
   }
 
-  console.log(url.value);
+  const result = await fetch("/short", {
+    method: "POST",
+    headers: {
+      'content-type': 'application/json;charset=UTF-8',
+    },
+    body: JSON.stringify({ url: url.value }),
+  })
+
+  if (result) {
+    let data: Shorten = (await result.json()).shorten
+    shortenLinks.value.push(new Shorten(data.origUrl, data.shortUrl))
+  } else {
+    alert("hubo un error")
+  }
+}
+
+const copyShort = async (index: number) => {
+  const btns = btnCopy.value as HTMLButtonElement[];
+  let short = shortenLinks.value[index].shortUrl
+  let shortUrl = location.protocol.concat("//").concat(window.location.host).concat(`/${short}`)
+  navigator.clipboard.writeText(shortUrl).then(() => { btns[0].setAttribute("class", "btn btn--minusRadius copied") })
 }
 
 </script>
@@ -62,14 +83,14 @@ const shorter = () => {
     </section>
     <section class="shorten container">
       <form @submit.prevent="shorter">
-        <input ref="input" v-model="url" type="text" placeholder="Shorten a link here..." />
+        <input ref="input" v-model.trim="url" type="text" placeholder="Shorten a link here..." />
         <button class="shorten__btn btn btn--minusRadius btn--big" type="submit">Shorten It!</button>
       </form>
-      <div class="shortened" v-for="item in shortenLinks" :key="item.url">
-        <p class="shortned__url">{{ item.url }}</p>
+      <div class="shortened" v-for="(item, index) in shortenLinks" :key="item.origUrl">
+        <p class="shortned__url">{{ item.origUrl }}</p>
         <div class="shortened__content">
-          <a class="shortned__short link-short">{{ item.short }}</a>
-          <button class="btn btn--minusRadius">Copy</button>
+          <a class="shortned__short link-short" :href="`/${item.shortUrl}`">{{ item.shortUrl }}</a>
+          <button ref="btnCopy" class="btn btn--minusRadius" @click="copyShort(index)">Copy</button>
         </div>
       </div>
     </section>
@@ -267,7 +288,7 @@ header {
     gap: 20px;
     align-items: center;
     justify-content: center;
-    background-image: url("images/bg-shorten-desktop.svg");
+    background-image: url("/images/bg-shorten-desktop.svg");
     background-size: cover;
     background-color: var(--Dark-violet);
     border-radius: 10px;
@@ -296,7 +317,7 @@ header {
         border: 2px solid rgb(226, 75, 75);
 
         &::placeholder {
-          color:  rgb(226, 75, 75);
+          color: rgb(226, 75, 75);
         }
       }
 
