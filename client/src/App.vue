@@ -1,4 +1,35 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+class Shorten {
+  short: string;
+  url: string;
+
+  constructor(short: string, url: string) {
+    this.short = short,
+      this.url = url
+  }
+}
+
+import { ref } from 'vue';
+
+const url = ref("")
+const input = ref<HTMLInputElement>()
+
+const shortenLinks = ref<Shorten[]>([])
+
+const shorter = () => {
+  if (url.value.length === 0) {
+    input.value?.setAttribute("class", "error")
+    input.value!.placeholder = "Please add link"
+    throw new Error("url vacio")
+  } else {
+    input.value?.setAttribute("class", "")
+    input.value!.placeholder = "Shorten a link here..."
+  }
+
+  console.log(url.value);
+}
+
+</script>
 
 <template>
   <header class="container">
@@ -29,11 +60,18 @@
       </div>
       <div class="content"><img class="home__image" src="/images/illustration-working.svg" alt="" /></div>
     </section>
-    <section class="url-shorter container">
-      <form>
-        <input type="text" placeholder="Shorten a link here..." />
-        <button class="url-shorter__btn btn btn--minusRadius btn--big" type="submit">Shorten It!</button>
+    <section class="shorten container">
+      <form @submit.prevent="shorter">
+        <input ref="input" v-model="url" type="text" placeholder="Shorten a link here..." />
+        <button class="shorten__btn btn btn--minusRadius btn--big" type="submit">Shorten It!</button>
       </form>
+      <div class="shortened" v-for="item in shortenLinks" :key="item.url">
+        <p class="shortned__url">{{ item.url }}</p>
+        <div class="shortened__content">
+          <a class="shortned__short link-short">{{ item.short }}</a>
+          <button class="btn btn--minusRadius">Copy</button>
+        </div>
+      </div>
     </section>
     <section class="features container">
       <h2 class="features__title">Advanced Statistics</h2>
@@ -75,58 +113,64 @@
         </article>
       </div>
     </section>
-    <section>
+    <section class="boost">
       <h2>Boost your links today</h2>
-      <button>Get Started</button>
+      <button class="btn btn--big">Get Started</button>
     </section>
   </main>
-  <footer>
+  <footer class="container">
     <div class="logo">Shortly</div>
-    <ul>
-      <li>
-        Features
-        <ul>
-          <li><a href="">Link Shortening</a></li>
-          <li><a href="">Branded Links</a></li>
-          <li><a href="">Analytics</a></li>
-        </ul>
-      </li>
-    </ul>
-    <ul>
-      <li>
-        Resources
-        <ul>
-          <li><a href="">Blog</a></li>
-          <li><a href="">Developers</a></li>
-          <li><a href="">Support</a></li>
-        </ul>
-      </li>
-    </ul>
-    <ul>
-      <li>
-        Company
-        <ul>
-          <li><a href="">About</a></li>
-          <li><a href="">Our Team</a></li>
-          <li><a href="">Careers</a></li>
-          <li><a href="">Contact</a></li>
-        </ul>
-      </li>
-    </ul>
-    <ul>
-      <li>
-        <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="" alt="facebook" /></a>
-      </li>
-      <li>
-        <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="" alt="twitter" /></a>
-      </li>
-      <li>
-        <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="" alt="pinterest" /></a>
-      </li>
-      <li>
-        <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="" alt="instagram" /></a>
-      </li>
-    </ul>
+    <div class="footer__resources">
+      <ul class="list">
+        <li class="list__title">
+          Features
+          <ul class="list__links">
+            <li><a href="">Link Shortening</a></li>
+            <li><a href="">Branded Links</a></li>
+            <li><a href="">Analytics</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="list">
+        <li class="list__title">
+          Resources
+          <ul class="list__links">
+            <li><a href="">Blog</a></li>
+            <li><a href="">Developers</a></li>
+            <li><a href="">Support</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="list">
+        <li class="list__title">
+          Company
+          <ul class="list__links">
+            <li><a href="">About</a></li>
+            <li><a href="">Our Team</a></li>
+            <li><a href="">Careers</a></li>
+            <li><a href="">Contact</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="social">
+        <li>
+          <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="/images/icon-facebook.svg"
+              alt="facebook" /></a>
+        </li>
+        <li>
+          <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="/images/icon-twitter.svg"
+              alt="twitter" /></a>
+        </li>
+        <li>
+          <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="/images/icon-pinterest.svg"
+              alt="pinterest" /></a>
+        </li>
+        <li>
+          <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="/images/icon-instagram.svg"
+              alt="instagram" /></a>
+        </li>
+      </ul>
+    </div>
   </footer>
 </template>
 
@@ -197,20 +241,20 @@ header {
     }
 
     img {
-      width: 120%;
+      width: 140%;
       position: relative;
-      left: 70px;
+      left: 90px;
 
       @include tablet() {
         margin-bottom: 40px;
-        width: 100%;
         left: 20px;
+        width: 140%;
       }
     }
   }
 }
 
-.url-shorter {
+.shorten {
 
   background-color: var(--Soft-Sky-blue);
   margin-top: 168px;
@@ -224,8 +268,9 @@ header {
     align-items: center;
     justify-content: center;
     background-image: url("images/bg-shorten-desktop.svg");
+    background-size: cover;
     background-color: var(--Dark-violet);
-    border-radius: 15px;
+    border-radius: 10px;
     position: relative;
     top: -84px;
 
@@ -237,7 +282,7 @@ header {
       flex: 4;
       height: 70px;
       padding: 10px 30px;
-      border-radius: 10px;
+      border-radius: 5px;
       outline: none;
       border: none;
       font-weight: bold;
@@ -247,13 +292,22 @@ header {
         color: var(--Gray);
       }
 
+      &.error {
+        border: 2px solid rgb(226, 75, 75);
+
+        &::placeholder {
+          color:  rgb(226, 75, 75);
+        }
+      }
+
       @include mobile() {
-        padding: 0 20px;
-        height: 60px;
+        font-size: 1rem;
+        padding: 0 10px;
+        height: 50px;
       }
     }
 
-    .url-shorter__btn {
+    .shorten__btn {
       min-width: 150px;
       flex: 1;
       height: 70px;
@@ -264,12 +318,86 @@ header {
       }
     }
   }
+
+  .shortened {
+    position: relative;
+    background-color: var(--White);
+    border-radius: 10px;
+    padding: 30px 60px;
+    top: -64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @include mobile() {
+      padding: 20px 20px;
+      flex-direction: column;
+
+      &::after {
+        content: "";
+        width: 100%;
+        height: 1px;
+        position: absolute;
+        background-color: var(--Gray);
+        top: 50px;
+        left: 0px;
+      }
+    }
+
+    .shortned__url {
+      overflow-x: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: 70%;
+
+      @include mobile() {
+        width: 100%;
+        font-size: 1.3rem;
+        padding-bottom: 20px;
+        position: relative;
+      }
+    }
+
+    .shortened__content {
+      display: flex;
+      align-items: center;
+
+      @include mobile() {
+        width: 100%;
+        flex-direction: column;
+      }
+
+      .shortned__short {
+        margin-right: 20px;
+
+        @include mobile() {
+          width: 100%;
+          font-size: 1.3rem;
+          margin-bottom: 15px;
+          margin-right: 0px;
+        }
+      }
+
+      .btn {
+        width: 130px;
+        height: 50px;
+
+        @include mobile() {
+          width: 100%;
+          font-size: 1.8rem;
+          font-weight: bold;
+        }
+      }
+    }
+
+  }
 }
 
 .features {
   background-color: var(--Soft-Sky-blue);
   text-align: center;
   padding-top: 40px;
+  padding-bottom: 120px;
 
   .features__title {
     font-size: 2.25rem;
@@ -285,60 +413,179 @@ header {
 
   .articles {
     display: flex;
-    gap: 30px;
-    flex-wrap: wrap;
     position: relative;
+    gap: 30px;
+    margin-top: 140px;
+    justify-content: space-between;
+
+    @include tablet() {
+      flex-direction: column;
+      align-items: center;
+    }
 
     &::before {
       content: "";
       position: absolute;
-      top: 190px;
+      top: 110px;
       width: 100%;
       height: 10px;
       background-color: var(--Cyan);
+
+      @include tablet() {
+        width: 10px;
+        height: 100%;
+        top: 0px;
+      }
     }
 
     article {
-      flex-grow: 1;
-      padding: 20px 33px;
+      padding: 25px 30px 40px;
       text-align: left;
       background-color: var(--White);
       position: relative;
-      margin-top: 80px;
-      flex-basis: 300px;
+      width: 350px;
+      border-radius: 5px;
+
+      @include tablet() {
+        margin-top: 0px;
+        text-align: center;
+      }
 
       &:first-child {
-        top: -40px;
+        top: -50px;
       }
 
       &:last-child {
-        bottom: -40px;
+        top: 50px;
       }
 
       .article__title {
         color: var(--Very-dark-violet);
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         font-weight: bold;
         padding-top: 50px;
+
+        @include mobile() {
+          font-size: 2rem;
+        }
       }
 
       .article__description {
         color: var(--Grayish-violet);
-        font-size: .9rem;
+        font-size: .84rem;
+        line-height: 1.8;
+
+        @include mobile() {
+          font-size: 1.2rem;
+        }
       }
 
       .article__image {
         background-color: var(--Dark-violet);
         position: absolute;
-        width: 80px;
-        height: 80px;
+        width: 85px;
+        height: 85px;
         top: -35px;
-        left: 20px;
+        left: 30px;
         padding: 20px;
         border-radius: 50%;
 
+        @include tablet() {
+          left: 132px;
+        }
+
         img {
           width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.boost {
+  background-image: url("/images/bg-boost-desktop.svg");
+  background-color: var(--Dark-violet);
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  h2 {
+    font-size: 2.4rem;
+    color: var(--White);
+    margin-bottom: 20px;
+  }
+}
+
+footer {
+  background-color: var(--Very-dark-violet);
+  color: var(--White);
+  display: flex;
+  padding: 80px 0;
+
+  .logo {
+    font-size: 2rem;
+  }
+
+  @include tablet() {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    .logo {
+      margin-bottom: 60px;
+    }
+
+  }
+
+  @include mobile() {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: 2rem;
+
+    .logo {
+      font-size: 4rem;
+    }
+  }
+
+  .footer__resources {
+    display: flex;
+
+    @include tablet() {
+      flex-direction: column;
+    }
+
+    @include mobile() {
+      font-size: 2rem;
+    }
+
+    ul {
+      margin-left: 30px;
+    }
+
+    .list {
+      list-style: none;
+      margin-left: 30px;
+
+      @include tablet() {
+        margin-bottom: 40px;
+        margin-left: 0;
+      }
+
+      .list__links {
+        list-style: none;
+        margin-left: 0;
+        margin-top: 20px;
+
+        li {
+          margin-bottom: 10px;
+
+          a {
+            text-decoration: none;
+            color: var(--Grayish-violet);
+          }
         }
       }
     }

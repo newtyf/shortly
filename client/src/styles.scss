@@ -32,7 +32,6 @@ html {
 .text {
   color: var(--Grayish-violet);
   line-height: 1.8;
-
 }
 
 .container {
@@ -110,5 +109,20 @@ html {
 
   &:hover {
     opacity: 0.7;
+  }
+}
+
+a {
+  &.link-short {
+    color: var(--Cyan);
+  }
+}
+
+.social {
+  display: flex;
+  list-style: none;
+
+  li {
+    margin-right: 30px;
   }
 }
