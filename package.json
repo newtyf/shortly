@@ -12,7 +12,8 @@
     "dev:client": "npm run dev -w client",
     "build:client": "npm run build -w client",
     "dev:server": "nodemon server/index.ts -w server",
-    "start": "node server/index"
+    "build:prod": "npm run build -w server",
+    "start": " node build/index"
   },
   "keywords": [],
   "author": "Axel Muñoz <axelskam.123@outlook.es>",
