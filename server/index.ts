@@ -25,7 +25,7 @@ class Shorten {
 
 app.get("/:id", async (req: Request, res: Response) => {
   const params = req.params;
-  const id = params["id"];
+  const id: string = params["id"];
   if (id !== "favicon.ico") {
     const result = await connection.query(
       `SELECT * FROM url WHERE shortUrl = ? LIMIT 1;`,
@@ -38,18 +38,15 @@ app.get("/:id", async (req: Request, res: Response) => {
 });
 
 app.post("/short", async (req: Request, res: Response) => {
-  const { url } = req.body;
+  const { url }: { url: string } = req.body;
 
   let pattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
   if (!pattern.test(url)) {
-    return res.send(null)
+    return res.send(null);
   }
 
-  const short = nanoid(6);
-  const shorten = {
-    origUrl: url,
-    shortUrl: short,
-  };
+  const short: string = nanoid(6);
+  const shorten: Shorten = new Shorten(url, short);
 
   try {
     await connection.query(`INSERT INTO url SET ?`, shorten);
