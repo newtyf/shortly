@@ -39,6 +39,12 @@ app.get("/:id", async (req: Request, res: Response) => {
 
 app.post("/short", async (req: Request, res: Response) => {
   const { url } = req.body;
+
+  let pattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+  if (!pattern.test(url)) {
+    return res.send(null)
+  }
+
   const short = nanoid(6);
   const shorten = {
     origUrl: url,
@@ -50,7 +56,6 @@ app.post("/short", async (req: Request, res: Response) => {
     res.json({ shorten });
   } catch (error) {
     console.log(error);
-    // res.statusCode = 500;
     res.send(null);
   }
 });
