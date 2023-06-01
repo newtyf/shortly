@@ -55,7 +55,7 @@
 
 ### 💻 Author
 
-- Portfolio - [@newtyf](https://newtytf.com)
+- Portfolio - [@newtyf](https://newtyf.com)
 - Instagram - [@newtyf](https://www.instagram.com/newt_yf/)
 - LinkedIn - [@newtyf](https://www.linkedin.com/in/axel-mu%C3%B1oz/)
 - Frontend Mentor - [@newtyf](https://www.frontendmentor.io/profile/TREz-bits)
