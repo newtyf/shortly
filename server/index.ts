@@ -40,7 +40,7 @@ app.get("/:id", async (req: Request, res: Response) => {
 app.post("/short", async (req: Request, res: Response) => {
   const { url } = req.body;
 
-  let pattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*(\?[\w-]+=[\w-]+(&[\w-]+=[\w-]+)*)?(#[\w-]*)?$/;
+  let pattern = /^(https?:\/\/)/;
   if (!pattern.test(url)) {
     return res.send(null);
   }
