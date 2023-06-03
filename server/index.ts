@@ -1,3 +1,4 @@
+import "dotenv/config"
 import { Request, Response } from "express";
 import { connection } from "./db";
 import { nanoid } from "nanoid";
@@ -26,15 +27,32 @@ class Shorten {
 app.get("/:id", async (req: Request, res: Response) => {
   const params = req.params;
   const id: string = params["id"];
-  if (id !== "favicon.ico") {
-    const result = await connection.query(
+
+  if (id === "favicon.ico") {
+    return;
+  }
+
+  let result: any;
+
+  try {
+    result = await connection.query(
       `SELECT * FROM url WHERE shortUrl = ? LIMIT 1;`,
       [id]
     );
-    const shortUrls: any = result[0];
-    const short: Shorten = shortUrls[0];
-    res.redirect(short.origUrl);
+  } catch (error) {
+    console.log(error);
+    res.json({ message: "short url no valida" });
   }
+
+  const shortUrls: Shorten[] = result[0];
+
+  if (shortUrls.length === 0) {
+    res.json({ message: "short url no valida" });
+    return
+  }
+
+  const short: Shorten = shortUrls[0];
+  res.redirect(short.origUrl);
 });
 
 app.post("/short", async (req: Request, res: Response) => {
@@ -42,7 +60,7 @@ app.post("/short", async (req: Request, res: Response) => {
 
   let pattern = /^(https?:\/\/)/;
   if (!pattern.test(url)) {
-    return res.send(null);
+    return res.json({});
   }
 
   const short: string = nanoid(6);
@@ -53,7 +71,7 @@ app.post("/short", async (req: Request, res: Response) => {
     res.json({ shorten });
   } catch (error) {
     console.log(error);
-    res.send(null);
+    res.json({});
   }
 });
 

@@ -11,6 +11,8 @@ const createConnection = async () => {
       database: process.env.DB_DATABASE,
     });
 
+    console.log("*** CONNECTION STABLISHED ***");
+
     await connection.query(
       `CREATE TABLE IF NOT EXISTS url (
         id INT AUTO_INCREMENT,
