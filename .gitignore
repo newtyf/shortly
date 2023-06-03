@@ -3,4 +3,6 @@
 /node_modules
 /url-shortening-api-master
 
+.env
+
 regex.js
