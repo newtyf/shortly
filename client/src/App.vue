@@ -27,7 +27,7 @@ const shorter = async () => {
     input.value!.style.color = "black";
   }
 
-  const result: Response = await fetch("http://localhost:3000/short", {
+  const result: Response = await fetch("/short", {
     method: "POST",
     headers: {
       "content-type": "application/json;charset=UTF-8",
