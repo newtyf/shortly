@@ -4,52 +4,66 @@ class Shorten {
   origUrl: string;
 
   constructor(url: string, short: string) {
-    this.origUrl = url,
-      this.shortUrl = short
+    (this.origUrl = url), (this.shortUrl = short);
   }
 }
 
-import { ref } from 'vue';
+import { ref } from "vue";
 
-const url = ref("")
-const input = ref<HTMLInputElement>()
-const btnCopy = ref<HTMLButtonElement[]>()
+const url = ref("");
+const input = ref<HTMLInputElement>();
+const btnCopy = ref<HTMLButtonElement[]>();
 
-const shortenLinks = ref<Shorten[]>([])
+const shortenLinks = ref<Shorten[]>([]);
 
 const shorter = async () => {
   if (url.value.length === 0) {
-    input.value?.setAttribute("class", "error")
-    input.value!.placeholder = "Please add link"
-    return
+    input.value?.setAttribute("class", "error");
+    input.value!.placeholder = "Please add link";
+    return;
   } else {
-    input.value?.setAttribute("class", "")
-    input.value!.placeholder = "Shorten a link here..."
+    input.value?.setAttribute("class", "");
+    input.value!.placeholder = "Shorten a link here...";
+    input.value!.style.color = "black";
   }
 
-  const result = await fetch("/short", {
+  const result: Response = await fetch("http://localhost:3000/short", {
     method: "POST",
     headers: {
-      'content-type': 'application/json;charset=UTF-8',
+      "content-type": "application/json;charset=UTF-8",
     },
     body: JSON.stringify({ url: url.value }),
-  })
+  });
 
-  if (result) {
-    let data: Shorten = (await result.json()).shorten
-    shortenLinks.value.push(new Shorten(data.origUrl, data.shortUrl))
-  } else {
-    alert("hubo un error")
+  const data = await result.json();
+
+  if (Object.keys(data).length === 0) {
+    input.value?.setAttribute("class", "error");
+    input.value!.placeholder = "Url is not valid";
+    input.value!.style.color = "red"
+    url.value = ""
+    return
   }
-}
+
+  url.value = ""
+  console.log(input.value?.value);
+  shortenLinks.value.push(
+    new Shorten(data.shorten.origUrl, data.shorten.shortUrl)
+  );
+};
 
 const copyShort = async (index: number) => {
   const btns = btnCopy.value as HTMLButtonElement[];
-  let short = shortenLinks.value[index].shortUrl
-  let shortUrl = location.protocol.concat("//").concat(window.location.host).concat(`/${short}`)
-  navigator.clipboard.writeText(shortUrl).then(() => { btns[0].setAttribute("class", "btn btn--minusRadius copied") })
-}
-
+  let short = shortenLinks.value[index].shortUrl;
+  let shortUrl = location.protocol
+    .concat("//")
+    .concat(window.location.host)
+    .concat(`/${short}`);
+  navigator.clipboard.writeText(shortUrl).then(() => {
+    btns[0].setAttribute("class", "btn btn--minusRadius copied");
+    btns[0].innerHTML = "Copied!"
+  });
+};
 </script>
 
 <template>
@@ -79,18 +93,26 @@ const copyShort = async (index: number) => {
         </p>
         <button class="btn btn--big">Get Started</button>
       </div>
-      <div class="content"><img class="home__image" src="/images/illustration-working.svg" alt="" /></div>
+      <div class="content">
+        <img class="home__image" src="/images/illustration-working.svg" alt="" />
+      </div>
     </section>
     <section class="shorten container">
       <form @submit.prevent="shorter">
         <input ref="input" v-model.trim="url" type="text" placeholder="Shorten a link here..." />
-        <button class="shorten__btn btn btn--minusRadius btn--big" type="submit">Shorten It!</button>
+        <button class="shorten__btn btn btn--minusRadius btn--big" type="submit">
+          Shorten It!
+        </button>
       </form>
       <div class="shortened" v-for="(item, index) in shortenLinks" :key="item.origUrl">
         <p class="shortned__url">{{ item.origUrl }}</p>
         <div class="shortened__content">
-          <a class="shortned__short link-short" :href="`/${item.shortUrl}`">{{ item.shortUrl }}</a>
-          <button ref="btnCopy" class="btn btn--minusRadius" @click="copyShort(index)">Copy</button>
+          <a class="shortned__short link-short" :href="`/${item.shortUrl}`">{{
+            item.shortUrl
+          }}</a>
+          <button ref="btnCopy" class="btn btn--minusRadius" @click="copyShort(index)">
+            Copy
+          </button>
         </div>
       </div>
     </section>
@@ -276,7 +298,6 @@ header {
 }
 
 .shorten {
-
   background-color: var(--Soft-Sky-blue);
   margin-top: 168px;
 
@@ -410,7 +431,6 @@ header {
         }
       }
     }
-
   }
 }
 
@@ -493,7 +513,7 @@ header {
 
       .article__description {
         color: var(--Grayish-violet);
-        font-size: .84rem;
+        font-size: 0.84rem;
         line-height: 1.8;
 
         @include mobile() {
@@ -557,7 +577,6 @@ footer {
     .logo {
       margin-bottom: 60px;
     }
-
   }
 
   @include mobile() {
