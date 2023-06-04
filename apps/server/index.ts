@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Request, Response } from "express";
+import { Request, Response, Router } from "express";
 import { connection } from "./db";
 import { nanoid } from "nanoid";
 import cors from "cors";
@@ -12,7 +12,10 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors({ origin: "*" }));
 
-app.use(express.static(path.join(__dirname, "../dist")));
+const router = Router()
+app.use("/api", router)
+
+app.use(express.static(path.join(__dirname, "../../", "client/dist")));
 
 class Shorten {
   origUrl: string;
@@ -24,7 +27,7 @@ class Shorten {
   }
 }
 
-app.get("/:id", async (req: Request, res: Response) => {
+router.get("/:id", async (req: Request, res: Response) => {
   const params = req.params;
   const id: string = params["id"];
 
@@ -55,7 +58,7 @@ app.get("/:id", async (req: Request, res: Response) => {
   res.redirect(short.origUrl);
 });
 
-app.post("/short", async (req: Request, res: Response) => {
+router.post("/short", async (req: Request, res: Response) => {
   const { url } = req.body;
 
   let pattern = /^(https?:\/\/)/;

@@ -27,7 +27,7 @@ const shorter = async () => {
     input.value!.style.color = "black";
   }
 
-  const result: Response = await fetch("/short", {
+  const result: Response = await fetch("/api/short", {
     method: "POST",
     headers: {
       "content-type": "application/json;charset=UTF-8",
@@ -567,6 +567,7 @@ footer {
 
   .logo {
     font-size: 2rem;
+    flex: 1;
   }
 
   @include tablet() {
@@ -607,7 +608,6 @@ footer {
 
     .list {
       list-style: none;
-      margin-left: 30px;
 
       @include tablet() {
         margin-bottom: 40px;
