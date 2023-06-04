@@ -19,31 +19,20 @@
 2. Start development server
 
    ```sh
-   # client vue
-   npm run dev:client
+   npm run dev
    ```
-   
-   ```sh
-   # server node
-   npm run dev:server
-   ```
-
 ## 👾 Build and Run for production
 1. Generate a full static production build
 
    ```sh
-   npm run build:client
+   npm run build
    ```
-   ```sh
-   npm run build:server
-   ```   
 
 2. You can run with:
 
    ```sh
    npm run start
-   ``` 
-
+   ```
 
 ### 🛠 Built with
 
@@ -52,6 +41,7 @@
 - [Vue.Js](https://vuejs.org/) - JS library
 - [Express](https://expressjs.com/)
 - [MySql](https://www.mysql.com/) - Docker image
+- [TurboRepo](https://turbo.build/)
 
 ### 💻 Author
 
