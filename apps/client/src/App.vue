@@ -1,88 +1,13 @@
 <script setup lang="ts">
-class Shorten {
-  shortUrl: string;
-  origUrl: string;
+import Shorter from './components/Shorter.vue'
+import Footer from './components/Footer.vue'
+import Header from './components/Header.vue'
+import Feature from './components/Feature.vue'
 
-  constructor(url: string, short: string) {
-    (this.origUrl = url), (this.shortUrl = short);
-  }
-}
-
-import { ref } from "vue";
-
-const url = ref("");
-const input = ref<HTMLInputElement>();
-const btnCopy = ref<HTMLButtonElement[]>();
-
-const shortenLinks = ref<Shorten[]>([]);
-
-const shorter = async () => {
-  if (url.value.length === 0) {
-    input.value?.setAttribute("class", "error");
-    input.value!.placeholder = "Please add link";
-    return;
-  } else {
-    input.value?.setAttribute("class", "");
-    input.value!.placeholder = "Shorten a link here...";
-    input.value!.style.color = "black";
-  }
-
-  const result: Response = await fetch("/api/short", {
-    method: "POST",
-    headers: {
-      "content-type": "application/json;charset=UTF-8",
-    },
-    body: JSON.stringify({ url: url.value }),
-  });
-
-  const data = await result.json();
-
-  if (Object.keys(data).length === 0) {
-    input.value?.setAttribute("class", "error");
-    input.value!.placeholder = "Url is not valid";
-    input.value!.style.color = "red"
-    url.value = ""
-    return
-  }
-
-  url.value = ""
-  console.log(input.value?.value);
-  shortenLinks.value.push(
-    new Shorten(data.shorten.origUrl, data.shorten.shortUrl)
-  );
-};
-
-const copyShort = async (index: number) => {
-  const btns = btnCopy.value as HTMLButtonElement[];
-  let short = shortenLinks.value[index].shortUrl;
-  let shortUrl = location.protocol
-    .concat("//")
-    .concat(window.location.host)
-    .concat(`/${short}`);
-  navigator.clipboard.writeText(shortUrl).then(() => {
-    btns[0].setAttribute("class", "btn btn--minusRadius copied");
-    btns[0].innerHTML = "Copied!"
-  });
-};
 </script>
 
 <template>
-  <header class="container">
-    <div class="logo">
-      <a href="#" title="logo"><img src="/images/logo.svg" alt="" /></a>
-    </div>
-    <nav>
-      <ul>
-        <li><a href="" class="link">Features</a></li>
-        <li><a href="" class="link">Pricing</a></li>
-        <li><a href="" class="link">Resources</a></li>
-      </ul>
-      <ul>
-        <li><button class="btn btn--white">Login</button></li>
-        <li><button class="btn">Sign Up</button></li>
-      </ul>
-    </nav>
-  </header>
+  <Header />
   <main>
     <section class="home container">
       <div class="content">
@@ -97,63 +22,20 @@ const copyShort = async (index: number) => {
         <img class="home__image" src="/images/illustration-working.svg" alt="" />
       </div>
     </section>
-    <section class="shorten container">
-      <form @submit.prevent="shorter">
-        <input ref="input" v-model.trim="url" type="text" placeholder="Shorten a link here..." />
-        <button class="shorten__btn btn btn--minusRadius btn--big" type="submit">
-          Shorten It!
-        </button>
-      </form>
-      <div class="shortened" v-for="(item, index) in shortenLinks" :key="item.origUrl">
-        <p class="shortned__url">{{ item.origUrl }}</p>
-        <div class="shortened__content">
-          <a class="shortned__short link-short" :href="`/${item.shortUrl}`">{{
-            item.shortUrl
-          }}</a>
-          <button ref="btnCopy" class="btn btn--minusRadius" @click="copyShort(index)">
-            Copy
-          </button>
-        </div>
-      </div>
-    </section>
-    <section class="features container">
+    <Shorter />
+    <section id="features" class="features container">
       <h2 class="features__title">Advanced Statistics</h2>
       <p class="features__subtitle text">
         Track how your links are performing across the web with our advanced
         statistics dashboard.
       </p>
       <div class="articles">
-        <article>
-          <figure class="article__image">
-            <img src="/images/icon-brand-recognition.svg" alt="" />
-          </figure>
-          <h3 class="article__title">Brand Recognition</h3>
-          <p class="article__description">
-            Boost your brand recognition with each click. Generic links
-            don&apos;t mean a thing. Branded links help instil confidence in
-            your content.
-          </p>
-        </article>
-        <article>
-          <figure class="article__image">
-            <img src="/images/icon-detailed-records.svg" alt="" />
-          </figure>
-          <h3 class="article__title">Detailed Records</h3>
-          <p class="article__description">
-            Gain insights into who is clicking your links. Knowing when and
-            where people engage with your content helps inform better decisions.
-          </p>
-        </article>
-        <article>
-          <figure class="article__image">
-            <img src="/images/icon-fully-customizable.svg" alt="" />
-          </figure>
-          <h3 class="article__title">Fully Customizable</h3>
-          <p class="article__description">
-            Improve brand awareness and content discoverability through
-            customizable links, supercharging audience engagement.
-          </p>
-        </article>
+        <Feature image="/images/icon-brand-recognition.svg" title="Brand Recognition"
+          description="Boost your brand recognition with each click. Generic links don&apos;t mean a thing. Branded links help instil confidence in your content." />
+        <Feature image="/images/icon-detailed-records.svg" title="Detailed Records"
+          description="Gain insights into who is clicking your links. Knowing when and where people engage with your content helps inform better decisions." />
+        <Feature image="/images/icon-fully-customizable.svg" title="Fully Customizable"
+          description="Improve brand awareness and content discoverability through customizable links, supercharging audience engagement." />
       </div>
     </section>
     <section class="boost">
@@ -161,95 +43,11 @@ const copyShort = async (index: number) => {
       <button class="btn btn--big">Get Started</button>
     </section>
   </main>
-  <footer class="container">
-    <div class="logo">Shortly</div>
-    <div class="footer__resources">
-      <ul class="list">
-        <li class="list__title">
-          Features
-          <ul class="list__links">
-            <li><a href="">Link Shortening</a></li>
-            <li><a href="">Branded Links</a></li>
-            <li><a href="">Analytics</a></li>
-          </ul>
-        </li>
-      </ul>
-      <ul class="list">
-        <li class="list__title">
-          Resources
-          <ul class="list__links">
-            <li><a href="">Blog</a></li>
-            <li><a href="">Developers</a></li>
-            <li><a href="">Support</a></li>
-          </ul>
-        </li>
-      </ul>
-      <ul class="list">
-        <li class="list__title">
-          Company
-          <ul class="list__links">
-            <li><a href="">About</a></li>
-            <li><a href="">Our Team</a></li>
-            <li><a href="">Careers</a></li>
-            <li><a href="">Contact</a></li>
-          </ul>
-        </li>
-      </ul>
-      <ul class="social">
-        <li>
-          <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="/images/icon-facebook.svg"
-              alt="facebook" /></a>
-        </li>
-        <li>
-          <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="/images/icon-twitter.svg"
-              alt="twitter" /></a>
-        </li>
-        <li>
-          <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="/images/icon-pinterest.svg"
-              alt="pinterest" /></a>
-        </li>
-        <li>
-          <a href="http://google.com" target="_blank" rel="noopener noreferrer"><img src="/images/icon-instagram.svg"
-              alt="instagram" /></a>
-        </li>
-      </ul>
-    </div>
-  </footer>
+  <Footer />
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "./styles/mixins.scss";
-
-header {
-  display: flex;
-  padding: 52px 0;
-  margin: auto;
-
-  nav {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-left: 20px;
-
-    @include tablet() {
-      display: none;
-    }
-
-    ul {
-      display: flex;
-      list-style: none;
-
-      li>a {
-        margin-left: 30px;
-      }
-
-      li>button {
-        margin-left: 10px;
-      }
-    }
-  }
-}
 
 .home {
   display: flex;
@@ -297,143 +95,6 @@ header {
   }
 }
 
-.shorten {
-  background-color: var(--Soft-Sky-blue);
-  margin-top: 168px;
-
-  form {
-    min-height: 168px;
-    padding: 60px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    align-items: center;
-    justify-content: center;
-    background-image: url("/images/bg-shorten-desktop.svg");
-    background-size: cover;
-    background-color: var(--Dark-violet);
-    border-radius: 10px;
-    position: relative;
-    top: -84px;
-
-    @include mobile() {
-      padding: 20px;
-    }
-
-    input {
-      flex: 4;
-      height: 70px;
-      padding: 10px 30px;
-      border-radius: 5px;
-      outline: none;
-      border: none;
-      font-weight: bold;
-      font-size: 1.3rem;
-
-      &::placeholder {
-        color: var(--Gray);
-      }
-
-      &.error {
-        border: 2px solid rgb(226, 75, 75);
-
-        &::placeholder {
-          color: rgb(226, 75, 75);
-        }
-      }
-
-      @include mobile() {
-        font-size: 1rem;
-        padding: 0 10px;
-        height: 50px;
-      }
-    }
-
-    .shorten__btn {
-      min-width: 150px;
-      flex: 1;
-      height: 70px;
-
-      @include mobile() {
-        padding: 0 20px;
-        height: 60px;
-      }
-    }
-  }
-
-  .shortened {
-    position: relative;
-    background-color: var(--White);
-    border-radius: 10px;
-    padding: 30px 60px;
-    top: -64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    @include mobile() {
-      padding: 20px 20px;
-      flex-direction: column;
-
-      &::after {
-        content: "";
-        width: 100%;
-        height: 1px;
-        position: absolute;
-        background-color: var(--Gray);
-        top: 50px;
-        left: 0px;
-      }
-    }
-
-    .shortned__url {
-      overflow-x: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      width: 70%;
-
-      @include mobile() {
-        width: 100%;
-        font-size: 1.3rem;
-        padding-bottom: 20px;
-        position: relative;
-      }
-    }
-
-    .shortened__content {
-      display: flex;
-      align-items: center;
-
-      @include mobile() {
-        width: 100%;
-        flex-direction: column;
-      }
-
-      .shortned__short {
-        margin-right: 20px;
-
-        @include mobile() {
-          width: 100%;
-          font-size: 1.3rem;
-          margin-bottom: 15px;
-          margin-right: 0px;
-        }
-      }
-
-      .btn {
-        width: 130px;
-        height: 50px;
-
-        @include mobile() {
-          width: 100%;
-          font-size: 1.8rem;
-          font-weight: bold;
-        }
-      }
-    }
-  }
-}
-
 .features {
   background-color: var(--Soft-Sky-blue);
   text-align: center;
@@ -462,6 +123,7 @@ header {
     @include tablet() {
       flex-direction: column;
       align-items: center;
+      margin-top: 100px;
     }
 
     &::before {
@@ -476,68 +138,6 @@ header {
         width: 10px;
         height: 100%;
         top: 0px;
-      }
-    }
-
-    article {
-      padding: 25px 30px 40px;
-      text-align: left;
-      background-color: var(--White);
-      position: relative;
-      width: 350px;
-      border-radius: 5px;
-
-      @include tablet() {
-        margin-top: 0px;
-        text-align: center;
-      }
-
-      &:first-child {
-        top: -50px;
-      }
-
-      &:last-child {
-        top: 50px;
-      }
-
-      .article__title {
-        color: var(--Very-dark-violet);
-        margin-bottom: 15px;
-        font-weight: bold;
-        padding-top: 50px;
-
-        @include mobile() {
-          font-size: 2rem;
-        }
-      }
-
-      .article__description {
-        color: var(--Grayish-violet);
-        font-size: 0.84rem;
-        line-height: 1.8;
-
-        @include mobile() {
-          font-size: 1.2rem;
-        }
-      }
-
-      .article__image {
-        background-color: var(--Dark-violet);
-        position: absolute;
-        width: 85px;
-        height: 85px;
-        top: -35px;
-        left: 30px;
-        padding: 20px;
-        border-radius: 50%;
-
-        @include tablet() {
-          left: 132px;
-        }
-
-        img {
-          width: 100%;
-        }
       }
     }
   }
@@ -556,79 +156,6 @@ header {
     font-size: 2.4rem;
     color: var(--White);
     margin-bottom: 20px;
-  }
-}
-
-footer {
-  background-color: var(--Very-dark-violet);
-  color: var(--White);
-  display: flex;
-  padding: 80px 0;
-
-  .logo {
-    font-size: 2rem;
-    flex: 1;
-  }
-
-  @include tablet() {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-
-    .logo {
-      margin-bottom: 60px;
-    }
-  }
-
-  @include mobile() {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    font-size: 2rem;
-
-    .logo {
-      font-size: 4rem;
-    }
-  }
-
-  .footer__resources {
-    display: flex;
-
-    @include tablet() {
-      flex-direction: column;
-    }
-
-    @include mobile() {
-      font-size: 2rem;
-    }
-
-    ul {
-      margin-left: 30px;
-    }
-
-    .list {
-      list-style: none;
-
-      @include tablet() {
-        margin-bottom: 40px;
-        margin-left: 0;
-      }
-
-      .list__links {
-        list-style: none;
-        margin-left: 0;
-        margin-top: 20px;
-
-        li {
-          margin-bottom: 10px;
-
-          a {
-            text-decoration: none;
-            color: var(--Grayish-violet);
-          }
-        }
-      }
-    }
   }
 }
 </style>
