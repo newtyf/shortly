@@ -10,7 +10,7 @@
     "co": "sui-mono commit",
     "dev": "turbo dev",
     "build": "turbo build",
-    "start": "node ./apps/server/dist/index.js"
+    "start": "turbo start"
   },
   "keywords": [],
   "author": "Axel Muñoz <axelskam.123@outlook.es>",

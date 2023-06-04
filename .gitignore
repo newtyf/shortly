@@ -1,4 +1,4 @@
-/dist
+apps/dist
 /build
 /node_modules
 /url-shortening-api-master
