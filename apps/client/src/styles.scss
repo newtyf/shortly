@@ -45,11 +45,9 @@ html {
 }
 
 .logo {
-  width: 140px;
+  min-width: 140px;
 
   a {
-    height: 100%;
-    width: 100%;
     img {
       width: 100%;
       height: 100%;
@@ -90,7 +88,7 @@ html {
 
   &.btn--white {
     font-weight: bold;
-    background-color: var(--White);
+    background-color: transparent;
     color: var(--Grayish-violet);
   }
 
