@@ -12,10 +12,9 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors({ origin: "*" }));
 
+app.use(express.static(path.join(__dirname, "../../client/dist")));
 const router = Router()
 app.use("/api", router)
-
-app.use(express.static(path.join(__dirname, "../../", "client/dist")));
 
 class Shorten {
   origUrl: string;
@@ -27,7 +26,7 @@ class Shorten {
   }
 }
 
-router.get("/:id", async (req: Request, res: Response) => {
+app.get("/:id", async (req: Request, res: Response) => {
   const params = req.params;
   const id: string = params["id"];
 
