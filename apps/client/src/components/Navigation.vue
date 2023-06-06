@@ -27,7 +27,7 @@ defineProps<{
   margin: 0 25px;
   right: 0;
   left: 0;
-  top: 130px;
+  top: 100px;
   border-radius: 20px;
   background-color: var(--Dark-violet);
   z-index: 100;

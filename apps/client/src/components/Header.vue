@@ -50,6 +50,10 @@ header {
   padding-bottom: 52px;
   margin: auto;
 
+  @include tablet() {
+    padding-top: 32px;
+  }
+
   .navigation {
     width: 100%;
     display: flex;
