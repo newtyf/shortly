@@ -66,7 +66,7 @@ footer {
   background-color: var(--Very-dark-violet);
   color: var(--White);
   display: flex;
-  padding: 80px 0;
+  padding: 80px 40px;
 
   .logo {
     font-size: 2rem;
