@@ -3,6 +3,7 @@
 
 <div align="center"><img src="https://github.com/newtyf/shortly/assets/87625663/7794c5b8-e724-4a57-8ba1-25ff7f50dc7f" alt="game-image" width="600" /></div>
 
+![image](https://github-production-user-asset-6210df.s3.amazonaws.com/87625663/244847828-b0b92c4e-3d06-4851-9b8b-2fc5f7e73e5a.png)
 <p align="center">Live Site <a href="https://shortly-production.up.railway.app/">Here</a>.</p>
 
 
